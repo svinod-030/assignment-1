@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Interactive Animator</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        progress::-moz-progress-bar {
+            background: red;
+        }
+        progress::-webkit-progress-value {
+            background: red;
+        }
+        progress {
+            background: red;
+        }
+    </style>
+</head>
+<script>
+    var transmissionSpeed = (2.8 * (10**8))
+    var delay;
+    var timeElapsed;
+    var myTimer;
+
+    function tick(){
+        timeElapsed+=10;
+        if(timeElapsed > delay) {
+            timeElapsed = delay
+        }
+        document.getElementById("time").innerHTML = (timeElapsed) + ' ms';
+        document.getElementById("progress").value = (timeElapsed / delay) * 100;
+        if(timeElapsed >= delay) {
+            stop();
+        }
+    }
+    function start(){
+        timeElapsed = 0;
+        myTimer = setInterval(tick, 10);
+    }
+    function stop(){
+        clearInterval(myTimer);
+    }
+    function resetForm(){
+        document.getElementById("time").innerHTML = '0.000 ms';
+        document.getElementById("progress").value = 0;
+        delay = 0;
+        clearInterval(myTimer);
+    }
+    function calculate() {
+        start();
+        var propagationDelay = (document.network.length.value * 1000) / transmissionSpeed;
+        var transmissionDelay = (document.network.packetSize.value) / (document.network.rate.value * (10 ** 3));
+        delay = Math.round((propagationDelay + transmissionDelay) * (10**6)) / 1000;
+    }
+</script>
+<body>
+    <form name="network">
+        <p>
+            Length:
+            <select name="length">
+                <option value="10">10 km</option>
+                <option value="100">100 km</option>
+                <option value="500">500 km</option>
+                <option value="1000">1000 km</option>
+            </select>
+            Rate:
+            <select name="rate">
+                <option value="512">512 Kbps</option>
+                <option value="1000">1 Mbps</option>
+                <option value="10000">10 Mbps</option>
+                <option value="100000">100 Mbps</option>
+            </select>
+            Packet size:
+            <select name="packetSize">
+                <option value="100">100 Bytes</option>
+                <option value="500">500 Bytes</option>
+                <option value="1000">1 K Bytes</option>
+            </select>
+            <input type="button" value="START" onclick="calculate()"/>
+            <input type="button" value="RESET" onclick="resetForm();reset();"/>
+        </p>
+        <table>
+            <tr>
+                <td>
+                    <img src="icon.png" width="50" height="50">
+                </td>
+                <td>
+                    <progress id="progress" value="0" max="100"/>
+                </td>
+                <td>
+                    <img src="icon.png" width="50" height="50">
+                </td>
+            </tr>
+            <tr align="center">
+                <td>
+                    Sender
+                </td>
+                <td>
+                    <span id="time"> 0.000 ms</span>
+                </td>
+                <td>
+                    Receiver
+                </td>
+            </tr>
+            <tr align="center">
+                <td colspan="3">
+                    Propagation speed: 2.8 x 10<sup>8</sup> m/sec
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
