@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.servingwebcontent;
+package com.example.assignment;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -27,7 +27,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = GreetingController.class)
-public class ServingWebContentApplicationTest {
+public class AssignmentApplicationTest {
 
 	@Autowired
 	private MockMvc mockMvc;
